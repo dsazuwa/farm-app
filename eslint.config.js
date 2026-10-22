@@ -22,5 +22,8 @@ export default defineConfig([
     languageOptions: {
       globals: globals.browser,
     },
+    rules: {
+      'unicorn-x/prevent-abbreviations': 'off',
+    },
   },
 ]);
