@@ -1,11 +1,22 @@
+import { cn } from 'cn';
 import Brand from '../brand';
 import ThemeToggle from './theme-toggle';
+import { Button } from '../ui/button';
 
-export default function AppBar() {
+export default function AppBar({ className }: { className?: string }) {
   return (
-    <header className='flex flex-row items-center justify-between gap-4 border-b px-[5%] py-5.5'>
+    <header
+      className={cn(
+        'flex flex-row items-center justify-between gap-4 border-b',
+        className,
+      )}
+    >
       <Brand />
-      <ThemeToggle />
+      <div className='flex items-center gap-1'>
+        <ThemeToggle />
+        <Button variant='ghost'>Log In</Button>
+        <Button>Get Started</Button>
+      </div>
     </header>
   );
 }

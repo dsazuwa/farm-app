@@ -5,9 +5,9 @@ import Footer from './footer';
 export default function Layout({ children }: { children?: ReactNode }) {
   return (
     <div className='flex min-h-screen flex-col'>
-      <AppBar />
+      <AppBar className='px-[5%] py-5.5' />
       <main className='container mx-auto flex-1'>{children}</main>
-      <Footer />
+      <Footer className='px-[5%] py-5.5' />
     </div>
   );
 }
