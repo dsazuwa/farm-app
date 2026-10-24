@@ -1,8 +1,8 @@
-@import "tailwindcss";
-@import "tw-animate-css";
-@import "shadcn/tailwind.css";
-@import "@fontsource-variable/eb-garamond";
-@import "@fontsource-variable/inter";
+@import 'tailwindcss';
+@import 'tw-animate-css';
+@import 'shadcn/tailwind.css';
+@import '@fontsource-variable/eb-garamond';
+@import '@fontsource-variable/inter';
 
 @custom-variant dark (&:is(.dark *));
 
@@ -95,7 +95,7 @@
 
   --sidebar-border: oklch(0.93 0.007 106.5);
 
-  --sidebar-ring: oklch(0.737 0.021 106.9)
+  --sidebar-ring: oklch(0.737 0.021 106.9);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -119,15 +119,9 @@
 }
 
 #root {
-  width: 1126px;
-  max-width: 100%;
-  margin: 0 auto;
-  text-align: center;
-  border-inline: 1px solid var(--border);
   min-height: 100svh;
   display: flex;
   flex-direction: column;
-  box-sizing: border-box;
 }
 
 body {
@@ -228,6 +222,7 @@ code {
   --color-chart-3: var(--chart-3);
   --color-chart-2: var(--chart-2);
   --color-chart-1: var(--chart-1);
+  --color-chart-accent: #dceba7;
   --color-ring: var(--ring);
   --color-input: var(--input);
   --color-border: var(--border);
@@ -257,10 +252,16 @@ code {
 
 @layer base {
   * {
-    @apply border-border outline-ring/50;}
+    @apply border-border outline-ring/50;
+  }
   body {
-    @apply bg-background text-foreground;}
-  button:not(:disabled), [role="button"]:not(:disabled) {
-    cursor: pointer;}
+    @apply bg-background text-foreground;
+  }
+  button:not(:disabled),
+  [role='button']:not(:disabled) {
+    cursor: pointer;
+  }
   html {
-    @apply font-serif;}}
+    @apply font-serif;
+  }
+}
