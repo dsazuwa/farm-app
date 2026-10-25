@@ -1,7 +1,7 @@
-import { Button } from '../../../components/ui/button';
-import { Input } from '../../../components/ui/input';
-import { Label } from '../../../components/ui/label';
-import AuthLayout from '../../../layouts/auth-layout';
+import { Button } from '@/components/ui/button';
+import { Field, FieldGroup, FieldLabel } from '@/components/ui/field';
+import { Input } from '@/components/ui/input';
+import AuthLayout from '@/layouts/auth-layout';
 
 export default function Login() {
   return (
@@ -19,40 +19,43 @@ export default function Login() {
 
 function LoginForm() {
   return (
-    <form className='flex flex-col gap-6'>
-      <div className='grid gap-2'>
-        <Label htmlFor='email'>Email</Label>
-        <Input
-          id='email'
-          name='email'
-          type='email'
-          autoComplete='email'
-          required
-        />
-      </div>
-
-      <div className='grid gap-2'>
-        <div className='flex items-center justify-between gap-2'>
-          <Label htmlFor='password'>Password</Label>
-          <Button
-            variant='link'
-            className='p-0'
-            render={<a href='/forgot-password'>Forgot your password?</a>}
+    <form>
+      <FieldGroup>
+        <Field>
+          <FieldLabel htmlFor='login-email'>Email</FieldLabel>
+          <Input
+            id='login-email'
+            name='email'
+            type='email'
+            autoComplete='email'
+            required
           />
-        </div>
+        </Field>
 
-        <Input
-          id='password'
-          name='password'
-          type='password'
-          autoComplete='current-password'
-          required
-        />
-      </div>
+        <Field>
+          <div className='flex items-center justify-between gap-2'>
+            <FieldLabel htmlFor='login-password'>Password</FieldLabel>
 
-      <Button type='submit' className='w-full'>
-        Sign in
-      </Button>
+            <Button
+              variant='link'
+              className='h-fit p-0'
+              render={<a href='/forgot-password'>Forgot your password?</a>}
+            />
+          </div>
+
+          <Input
+            id='login-password'
+            name='password'
+            type='password'
+            autoComplete='current-password'
+            required
+          />
+        </Field>
+
+        <Field>
+          <Button type='submit'>Sign in</Button>
+        </Field>
+      </FieldGroup>
     </form>
   );
 }

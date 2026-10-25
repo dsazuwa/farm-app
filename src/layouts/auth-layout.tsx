@@ -1,13 +1,8 @@
+import Brand from '@/components/brand';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { cn } from 'cn';
 import { MoveLeft } from 'lucide-react';
-import Brand from '../components/brand';
-import { Button } from '../components/ui/button';
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from '../components/ui/card';
 
 import type { ReactNode } from 'react';
 
@@ -42,7 +37,7 @@ export default function AuthLayout({
             </CardTitle>
           </CardHeader>
 
-          <CardContent>
+          <CardContent className='gap-7'>
             {googleLabel && (
               <>
                 <Button type='button' variant='outline' className='w-full'>
@@ -50,7 +45,7 @@ export default function AuthLayout({
                   {googleLabel}
                 </Button>
 
-                <div className='flex items-center gap-3 py-5'>
+                <div className='flex items-center gap-3'>
                   <span className='bg-border h-px flex-1' />
                   <span className='text-muted-foreground text-xs'>or</span>
                   <span className='bg-border h-px flex-1' />

@@ -1,7 +1,7 @@
-import { Button } from '../../../components/ui/button';
-import { Input } from '../../../components/ui/input';
-import { Label } from '../../../components/ui/label';
-import AuthLayout from '../../../layouts/auth-layout';
+import { Button } from '@/components/ui/button';
+import { Field, FieldGroup, FieldLabel } from '@/components/ui/field';
+import { Input } from '@/components/ui/input';
+import AuthLayout from '@/layouts/auth-layout';
 
 export default function Recover() {
   return (
@@ -18,21 +18,23 @@ export default function Recover() {
 
 function RecoverForm() {
   return (
-    <form className='flex flex-col gap-6'>
-      <div className='grid gap-2'>
-        <Label htmlFor='email'>Email</Label>
-        <Input
-          id='email'
-          name='email'
-          type='email'
-          autoComplete='email'
-          required
-        />
-      </div>
+    <form>
+      <FieldGroup>
+        <Field>
+          <FieldLabel htmlFor='recover-email'>Email</FieldLabel>
+          <Input
+            id='recover-email'
+            name='email'
+            type='email'
+            autoComplete='email'
+            required
+          />
+        </Field>
 
-      <Button type='submit' className='w-full'>
-        Send reset link
-      </Button>
+        <Field>
+          <Button type='submit'>Send reset link</Button>
+        </Field>
+      </FieldGroup>
     </form>
   );
 }

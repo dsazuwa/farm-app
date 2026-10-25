@@ -1,7 +1,7 @@
-import { Button } from '../../../components/ui/button';
-import { Input } from '../../../components/ui/input';
-import { Label } from '../../../components/ui/label';
-import AuthLayout from '../../../layouts/auth-layout';
+import { Button } from '@/components/ui/button';
+import { Field, FieldGroup, FieldLabel } from '@/components/ui/field';
+import { Input } from '@/components/ui/input';
+import AuthLayout from '@/layouts/auth-layout';
 
 export default function Register() {
   return (
@@ -19,43 +19,45 @@ export default function Register() {
 
 function RegisterForm() {
   return (
-    <form className='flex flex-col gap-6'>
-      <div className='grid gap-2'>
-        <Label htmlFor='email'>Email</Label>
-        <Input
-          id='email'
-          name='email'
-          type='email'
-          autoComplete='email'
-          required
-        />
-      </div>
+    <form>
+      <FieldGroup>
+        <Field>
+          <FieldLabel htmlFor='register-email'>Email</FieldLabel>
+          <Input
+            id='register-email'
+            name='email'
+            type='email'
+            autoComplete='email'
+            required
+          />
+        </Field>
 
-      <div className='grid gap-2'>
-        <Label htmlFor='password'>Password</Label>
-        <Input
-          id='password'
-          name='password'
-          type='password'
-          autoComplete='new-password'
-          required
-        />
-      </div>
+        <Field>
+          <FieldLabel htmlFor='register-password'>Password</FieldLabel>
+          <Input
+            id='register-password'
+            name='password'
+            type='password'
+            autoComplete='new-password'
+            required
+          />
+        </Field>
 
-      <div className='grid gap-2'>
-        <Label htmlFor='confirm-password'>Confirm Password</Label>
-        <Input
-          id='confirm-password'
-          name='confirmPassword'
-          type='password'
-          autoComplete='new-password'
-          required
-        />
-      </div>
+        <Field>
+          <FieldLabel htmlFor='confirm-password'>Confirm password</FieldLabel>
+          <Input
+            id='confirm-password'
+            name='confirmPassword'
+            type='password'
+            autoComplete='new-password'
+            required
+          />
+        </Field>
 
-      <Button type='submit' className='w-full'>
-        Create account
-      </Button>
+        <Field>
+          <Button type='submit'>Create account</Button>
+        </Field>
+      </FieldGroup>
     </form>
   );
 }
