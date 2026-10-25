@@ -1,18 +1,18 @@
 import { Button } from '@/components/ui/button';
 import { Field, FieldGroup, FieldLabel } from '@/components/ui/field';
 import { Input } from '@/components/ui/input';
-import AuthLayout from '@/layouts/auth-layout';
+import AuthCard from '../components/auth-card';
 
 export default function Recover() {
   return (
-    <AuthLayout
+    <AuthCard
       title='Forgot Your Password?'
       footerText='Remember your password?'
       footerLinkText='Sign in'
       footerLinkHref='/login'
     >
       <RecoverForm />
-    </AuthLayout>
+    </AuthCard>
   );
 }
 

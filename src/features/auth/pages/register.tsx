@@ -1,11 +1,11 @@
 import { Button } from '@/components/ui/button';
 import { Field, FieldGroup, FieldLabel } from '@/components/ui/field';
 import { Input } from '@/components/ui/input';
-import AuthLayout from '@/layouts/auth-layout';
+import AuthCard from '../components/auth-card';
 
 export default function Register() {
   return (
-    <AuthLayout
+    <AuthCard
       title='Create Your Account'
       googleLabel='Sign up with Google'
       footerText='Already have an account?'
@@ -13,7 +13,7 @@ export default function Register() {
       footerLinkHref='/login'
     >
       <RegisterForm />
-    </AuthLayout>
+    </AuthCard>
   );
 }
 

@@ -1,11 +1,13 @@
+import { Link } from 'react-router';
+
 import { Button } from '@/components/ui/button';
 import { Field, FieldGroup, FieldLabel } from '@/components/ui/field';
 import { Input } from '@/components/ui/input';
-import AuthLayout from '@/layouts/auth-layout';
+import AuthCard from '../components/auth-card';
 
 export default function Login() {
   return (
-    <AuthLayout
+    <AuthCard
       title='Welcome Back'
       googleLabel='Continue with Google'
       footerText='New to Farm Desk?'
@@ -13,7 +15,7 @@ export default function Login() {
       footerLinkHref='/register'
     >
       <LoginForm />
-    </AuthLayout>
+    </AuthCard>
   );
 }
 
@@ -39,7 +41,7 @@ function LoginForm() {
             <Button
               variant='link'
               className='h-fit p-0'
-              render={<a href='/forgot-password'>Forgot your password?</a>}
+              render={<Link to='/recover'>Forgot your password?</Link>}
             />
           </div>
 

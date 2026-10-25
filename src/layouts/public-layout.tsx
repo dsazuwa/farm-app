@@ -1,8 +1,8 @@
 import type { ReactNode } from 'react';
-import AppBar from './app-bar';
-import Footer from './footer';
+import AppBar from '../components/layout/app-bar';
+import Footer from '../components/layout/footer';
 
-export default function Layout({ children }: { children?: ReactNode }) {
+export default function PublicLayout({ children }: { children?: ReactNode }) {
   return (
     <div className='flex min-h-screen flex-col'>
       <AppBar className='px-[5%] py-5.5' />
