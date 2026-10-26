@@ -6,12 +6,12 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
 type AuthLayoutProps = {
-  title: string;
   googleLabel?: string;
   footerText: string;
   footerLinkText: string;
   footerLinkHref: string;
   children: ReactNode;
+  title?: string;
 };
 
 export default function AuthCard({
@@ -25,11 +25,13 @@ export default function AuthCard({
   return (
     <>
       <Card className='my-(--card-spacing) w-full py-10'>
-        <CardHeader>
-          <CardTitle className='text-center text-xl font-bold'>
-            {title}
-          </CardTitle>
-        </CardHeader>
+        {title && (
+          <CardHeader>
+            <CardTitle className='text-center text-xl font-bold'>
+              {title}
+            </CardTitle>
+          </CardHeader>
+        )}
 
         <CardContent className='gap-7'>
           {googleLabel && (

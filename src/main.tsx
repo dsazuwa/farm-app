@@ -6,6 +6,7 @@ import App from './app.tsx';
 import Login from './features/auth/pages/login.tsx';
 import Recover from './features/auth/pages/recover.tsx';
 import Register from './features/auth/pages/register.tsx';
+import ResetPassword from './features/auth/pages/reset.tsx';
 import { ThemeProvider } from './hooks/theme-context.tsx';
 import './index.css';
 import AuthLayout from './layouts/auth-layout.tsx';
@@ -21,6 +22,7 @@ createRoot(document.querySelector('#root')!).render(
             <Route path='login' element={<Login />} />
             <Route path='register' element={<Register />} />
             <Route path='recover' element={<Recover />} />
+            <Route path='reset' element={<ResetPassword />} />
           </Route>
         </Routes>
       </BrowserRouter>
