@@ -8,7 +8,7 @@ export default function AuthLayout() {
   return (
     <main className='flex flex-1 flex-col items-center justify-center px-4 py-12 sm:px-6'>
       <div className='flex w-full max-w-md flex-col'>
-        <Link to='/' className='mx-auto mb-6 w-fit sm:mb-8'>
+        <Link to='/' className='mx-auto w-fit'>
           <Brand />
         </Link>
 
@@ -16,7 +16,7 @@ export default function AuthLayout() {
 
         <Button
           variant='link'
-          className='mx-auto mt-2'
+          className='mx-auto h-fit'
           render={
             <Link
               to='/'

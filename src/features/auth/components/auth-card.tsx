@@ -24,7 +24,7 @@ export default function AuthCard({
 }: AuthLayoutProps) {
   return (
     <>
-      <Card className='mb-2 w-full py-10'>
+      <Card className='my-(--card-spacing) w-full py-10'>
         <CardHeader>
           <CardTitle className='text-center text-xl font-bold'>
             {title}
@@ -50,11 +50,12 @@ export default function AuthCard({
           {children}
         </CardContent>
       </Card>
-      <p className='text-muted-foreground flex items-center justify-center gap-1 text-sm'>
+
+      <p className='text-muted-foreground flex items-center justify-center gap-1 pb-2 text-sm'>
         {footerText}{' '}
         <Button
           variant='link'
-          className='px-0'
+          className='h-fit px-0'
           render={<Link to={footerLinkHref}>{footerLinkText}</Link>}
         />
       </p>
