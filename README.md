@@ -1,78 +1,102 @@
-# React + TypeScript + Vite
+# Farm Desk
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A farm management application built with React, TypeScript, Vite, Tailwind CSS, and shadcn/ui.
 
-Currently, two official plugins are available:
+Authentication uses Supabase Auth. A Spring Boot backend is planned for farm operations, with Supabase PostgreSQL as the database.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## Getting started
 
-## React Compiler
+### Prerequisites
 
-The React Compiler is enabled on this template. See [this documentation](https://react.dev/learn/react-compiler) for more information.
+- A Node.js version supported by the project's Vite version
+- npm
+- A Supabase project
 
-Note: This will impact Vite dev & build performances.
-You can also try [the experimental native React Compiler support in plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md#rust-react-compiler) by using `compiler: true` in the plugin options instead of using the Babel plugin.
+### Install dependencies
 
-## Expanding the ESLint configuration
+From the project root:
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-
+```bash
+npm install
 ```
 
-You can also install [eslint-plugin-react-x](https://npmx.dev/package/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://npmx.dev/package/eslint-plugin-react-dom) for React-specific lint rules:
+### Configure Supabase
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+1. Create a project at https://supabase.com/dashboard.
+2. Open the project's **Connect** dialog.
+3. Copy the **Project URL** and **publishable key**.
+4. Copy the environment template:
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-
+```bash
+cp .env.local.sample .env.local
 ```
+
+5. Populate `.env.local`:
+
+```dotenv
+VITE_SUPABASE_URL=https://your-project.supabase.co
+VITE_SUPABASE_PUBLISHABLE_KEY=your-publishable-key
+```
+
+Use the publishable key for the frontend. Never put a Supabase secret key, service-role key, or database password in a `VITE_` environment variable: those variables are exposed to the browser.
+
+The `.env.local.sample` file is tracked as a configuration template. Keep `.env.local` excluded from Git.
+
+### Authentication configuration
+
+In the Supabase dashboard:
+
+- Enable the Email authentication provider.
+- Enable email confirmation for new accounts.
+- Configure the **Site URL** to match your local frontend URL.
+- Add the redirect URLs used by email confirmation and password recovery.
+
+For Vite's default development address, the Site URL is:
+
+```text
+http://localhost:5173
+```
+
+The password recovery redirect is:
+
+```text
+http://localhost:5173/reset
+```
+
+Use the actual port shown by Vite if it differs. Redirect URLs must match those used by the authentication service.
+
+The Data API is not required when using Supabase only for authentication and accessing application data through Spring Boot.
+
+### Start development
+
+```bash
+npm run dev
+```
+
+Open the URL printed in the terminal.
+
+Restart the development server after changing environment variables.
+
+## Supabase client
+
+The shared client is defined in:
+
+```text
+src/lib/supabase.ts
+```
+
+Authentication requests should go through an auth service rather than calling Supabase directly from page components.
+
+## Production build
+
+```bash
+npm run build
+```
+
+Preview the build locally:
+
+```bash
+npm run preview
+```
+
+For deployment, configure the environment variables on the hosting platform before building. Add your production authentication redirect URLs in Supabase.

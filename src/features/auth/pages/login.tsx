@@ -1,15 +1,17 @@
-import { Link } from 'react-router';
+import { useState, type SubmitEvent } from 'react';
+import { Link, useNavigate } from 'react-router';
 
 import { Button } from '@/components/ui/button';
 import { Field, FieldGroup, FieldLabel } from '@/components/ui/field';
 import { Input } from '@/components/ui/input';
+import { authService, type LoginInput } from '@/services/auth-service';
 import AuthCard from '../components/auth-card';
 
 export default function Login() {
   return (
     <AuthCard
       title='Welcome Back'
-      googleLabel='Continue with Google'
+      // googleLabel='Continue with Google'
       footerText='New to Farm Desk?'
       footerLinkText='Create an account'
       footerLinkHref='/register'
@@ -20,8 +22,46 @@ export default function Login() {
 }
 
 function LoginForm() {
+  const navigate = useNavigate();
+
+  const [values, setValues] = useState<LoginInput>({ email: '', password: '' });
+  const [requestError, setRequestError] = useState('');
+  const [isPending, setIsPending] = useState(false);
+
+  function updateField(field: keyof LoginInput, value: string) {
+    setValues((previous) => ({ ...previous, [field]: value }));
+    setRequestError('');
+  }
+
+  async function handleSubmit(e: SubmitEvent<HTMLFormElement>) {
+    e.preventDefault();
+
+    if (isPending) return;
+
+    setRequestError('');
+    setIsPending(true);
+
+    try {
+      await authService.loginWithEmail({
+        email: values.email.trim(),
+        password: values.password,
+      });
+
+      // UI-only test: no account is created.
+      // await new Promise<void>((resolve) => {
+      //   setTimeout(resolve, 800);
+      // });
+
+      navigate('/farms', { replace: true });
+    } catch {
+      setRequestError('Login failed, please try again.');
+    } finally {
+      setIsPending(false);
+    }
+  }
+
   return (
-    <form>
+    <form onSubmit={handleSubmit}>
       <FieldGroup>
         <Field>
           <FieldLabel htmlFor='login-email'>Email</FieldLabel>
@@ -29,7 +69,10 @@ function LoginForm() {
             id='login-email'
             name='email'
             type='email'
-            autoComplete='email'
+            autoComplete='username'
+            value={values.email}
+            onChange={(e) => updateField('email', e.target.value)}
+            disabled={isPending}
             required
           />
         </Field>
@@ -50,12 +93,23 @@ function LoginForm() {
             name='password'
             type='password'
             autoComplete='current-password'
+            value={values.password}
+            onChange={(e) => updateField('password', e.target.value)}
+            disabled={isPending}
             required
           />
         </Field>
 
+        {requestError && (
+          <p role='alert' className='text-destructive text-sm'>
+            {requestError}
+          </p>
+        )}
+
         <Field>
-          <Button type='submit'>Sign in</Button>
+          <Button type='submit' disabled={isPending}>
+            {isPending ? 'Signing in…' : 'Sign in'}
+          </Button>
         </Field>
       </FieldGroup>
     </form>
