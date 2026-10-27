@@ -2,18 +2,13 @@ import { MailCheck } from 'lucide-react';
 import { useState, type SubmitEvent } from 'react';
 
 import { Button } from '@/components/ui/button';
-import {
-  Field,
-  FieldDescription,
-  FieldError,
-  FieldGroup,
-  FieldLabel,
-} from '@/components/ui/field';
+import { Field, FieldGroup, FieldLabel } from '@/components/ui/field';
 import { Input } from '@/components/ui/input';
 import { authService, type RegisterInput } from '@/services/auth-service';
 import type { FieldErrors } from '@/types/validation';
 import AuthCard from '../components/auth-card';
 import AuthStatus from '../components/auth-status';
+import PasswordFields from '../components/password-fields';
 
 type RegisterValues = RegisterInput & { confirmPassword: string };
 
@@ -51,9 +46,6 @@ function RegisterForm({ onSuccess }: { onSuccess: () => void }) {
   const [errors, setErrors] = useState<FieldErrors<RegisterValues>>({});
   const [requestError, setRequestError] = useState('');
   const [isPending, setIsPending] = useState(false);
-
-  const passwordHelp =
-    'Use at least 8 characters, including uppercase, lowercase, a number, and a symbol.';
 
   function validate(values: RegisterValues): FieldErrors<RegisterValues> {
     const errors: FieldErrors<RegisterValues> = {};
@@ -118,50 +110,17 @@ function RegisterForm({ onSuccess }: { onSuccess: () => void }) {
           />
         </Field>
 
-        <Field>
-          <FieldLabel htmlFor='register-password'>Password</FieldLabel>
-          <Input
-            id='register-password'
-            name='password'
-            type='password'
-            autoComplete='new-password'
-            value={values.password}
-            onChange={(e) => updateField('password', e.target.value)}
-            disabled={isPending}
-            minLength={8}
-            pattern='(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[^A-Za-z0-9\s]).{8,}'
-            title={passwordHelp}
-            aria-describedby='register-password-help'
-            required
-          />
-          <FieldDescription id='register-password-help'>
-            {passwordHelp}
-          </FieldDescription>
-        </Field>
-
-        <Field data-invalid={Boolean(errors.confirmPassword)}>
-          <FieldLabel htmlFor='confirm-password'>Confirm password</FieldLabel>
-          <Input
-            id='confirm-password'
-            name='confirmPassword'
-            type='password'
-            autoComplete='new-password'
-            value={values.confirmPassword}
-            onChange={(e) => updateField('confirmPassword', e.target.value)}
-            disabled={isPending}
-            aria-invalid={Boolean(errors.confirmPassword)}
-            aria-describedby={
-              errors.confirmPassword ? 'confirm-password-error' : undefined
-            }
-            required
-          />
-
-          {errors.confirmPassword && (
-            <FieldError id='confirm-password-error'>
-              {errors.confirmPassword}
-            </FieldError>
-          )}
-        </Field>
+        <PasswordFields
+          idPrefix='register'
+          password={values.password}
+          confirmPassword={values.confirmPassword}
+          confirmPasswordError={errors.confirmPassword}
+          disabled={isPending}
+          onPasswordChange={(value) => updateField('password', value)}
+          onConfirmPasswordChange={(value) =>
+            updateField('confirmPassword', value)
+          }
+        />
 
         {requestError && (
           <p role='alert' className='text-destructive text-sm'>
