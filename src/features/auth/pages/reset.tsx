@@ -1,9 +1,10 @@
 import { Check, CircleX, LoaderCircle } from 'lucide-react';
-import { useEffect, useState, type SubmitEvent } from 'react';
+import { useState, type SubmitEvent } from 'react';
 import { Link } from 'react-router';
 
 import { Button } from '@/components/ui/button';
 import { Field, FieldGroup } from '@/components/ui/field';
+import { useAuth } from '@/hooks/use-auth';
 import { ApiError } from '@/lib/api-error';
 import { authService } from '@/services/auth-service';
 import type { FieldErrors } from '@/types/validation';
@@ -15,31 +16,22 @@ type ResetStatus = 'loading' | 'form' | 'success' | 'invalid';
 type ResetValues = { password: string; confirmPassword: string };
 
 export default function ResetPassword() {
-  const [status, setStatus] = useState<ResetStatus>('loading');
+  const { user, isLoading, isRecovering, completeRecovery } = useAuth();
+  const [result, setResult] = useState<ResetStatus>('form');
+  const status = getStatus();
 
-  useEffect(() => {
-    let cancelled = false;
+  function getStatus() {
+    if (result === 'success') return 'success';
+    if (isLoading) return 'loading';
+    if (result === 'invalid' || !user || !isRecovering) return 'invalid';
 
-    async function initialize() {
-      if (authService.getRecoveryRedirectError()) {
-        setStatus('invalid');
-        return;
-      }
+    return 'form';
+  }
 
-      try {
-        const ready = await authService.initializePasswordRecovery();
-
-        if (!cancelled) setStatus(ready ? 'form' : 'invalid');
-      } catch {
-        if (!cancelled) setStatus('invalid');
-      }
-    }
-    void initialize();
-
-    return () => {
-      cancelled = true;
-    };
-  }, []);
+  function handleSuccess() {
+    setResult('success');
+    completeRecovery();
+  }
 
   return (
     <AuthCard
@@ -66,8 +58,8 @@ export default function ResetPassword() {
 
       {status === 'form' && (
         <ResetForm
-          onSuccess={() => setStatus('success')}
-          onInvalidLink={() => setStatus('invalid')}
+          onSuccess={handleSuccess}
+          onInvalidLink={() => setResult('invalid')}
         />
       )}
 

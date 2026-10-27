@@ -1,6 +1,15 @@
 import { ApiError } from '@/lib/api-error';
-import { recoveryReady, supabase } from '@/lib/supabase';
 import { PASSWORD_HELP } from '@/lib/validation';
+import {
+  supabase,
+  subscribeToAuth,
+  completePasswordRecovery,
+} from '@/lib/supabase';
+
+export type AuthUser = {
+  id: string;
+  email: string | undefined;
+};
 
 export type AuthCredentials = {
   email: string;
@@ -11,18 +20,9 @@ export type RegisterInput = AuthCredentials;
 export type LoginInput = AuthCredentials;
 
 export const authService = {
-  getRecoveryRedirectError() {
-    const params = new URLSearchParams(globalThis.location.hash.slice(1));
+  subscribe: subscribeToAuth,
 
-    return (
-      params.get('error_code') ??
-      (params.has('error') ? 'RECOVERY_LINK_INVALID' : undefined)
-    );
-  },
-
-  async initializePasswordRecovery(): Promise<boolean> {
-    return recoveryReady;
-  },
+  completeRecovery: completePasswordRecovery,
 
   async register({ email, password }: RegisterInput) {
     try {
@@ -59,6 +59,19 @@ export const authService = {
       throw normalizeAuthError(
         error,
         "We couldn't sign you in. Check your credentials and try again.",
+      );
+    }
+  },
+
+  async logout(): Promise<void> {
+    try {
+      const { error } = await supabase.auth.signOut();
+
+      if (error) throw error;
+    } catch (error) {
+      throw normalizeAuthError(
+        error,
+        'We failed to sign you out. Please try again.',
       );
     }
   },
