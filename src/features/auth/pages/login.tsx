@@ -4,8 +4,9 @@ import { Link, useNavigate } from 'react-router';
 import { Button } from '@/components/ui/button';
 import { Field, FieldGroup, FieldLabel } from '@/components/ui/field';
 import { Input } from '@/components/ui/input';
+import { ApiError } from '@/lib/api-error';
 import { authService, type LoginInput } from '@/services/auth-service';
-import AuthCard from '../components/auth-card';import { ApiError } from '@/lib/api-error';
+import AuthCard from '../components/auth-card';
 
 export default function Login() {
   return (
@@ -53,8 +54,12 @@ function LoginForm() {
       // });
 
       navigate('/farms', { replace: true });
-    } catch {
-      setRequestError('Login failed, please try again.');
+    } catch (error) {
+      setRequestError(
+        error instanceof ApiError
+          ? error.message
+          : 'Login failed. Please try again.',
+      );
     } finally {
       setIsPending(false);
     }

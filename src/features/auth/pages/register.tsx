@@ -4,6 +4,7 @@ import { useState, type SubmitEvent } from 'react';
 import { Button } from '@/components/ui/button';
 import { Field, FieldGroup, FieldLabel } from '@/components/ui/field';
 import { Input } from '@/components/ui/input';
+import { ApiError } from '@/lib/api-error';
 import { authService, type RegisterInput } from '@/services/auth-service';
 import type { FieldErrors } from '@/types/validation';
 import AuthCard from '../components/auth-card';
@@ -86,8 +87,12 @@ function RegisterForm({ onSuccess }: { onSuccess: () => void }) {
       });
 
       onSuccess();
-    } catch {
-      setRequestError('Registration failed, please try again.');
+    } catch (error) {
+      setRequestError(
+        error instanceof ApiError
+          ? error.message
+          : 'Registration failed. Please try again.',
+      );
     } finally {
       setIsPending(false);
     }
