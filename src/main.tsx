@@ -9,8 +9,10 @@ import Login from './features/auth/pages/login.tsx';
 import Recover from './features/auth/pages/recover.tsx';
 import Register from './features/auth/pages/register.tsx';
 import ResetPassword from './features/auth/pages/reset.tsx';
+import FarmsPage from './features/farms/farms-page.tsx';
 import './index.css';
 import AuthLayout from './layouts/auth-layout.tsx';
+import FarmsLayout from './layouts/farms-layout.tsx';
 import AuthProvider from './providers/auth-provider.tsx';
 import ThemeProvider from './providers/theme-provider.tsx';
 
@@ -32,7 +34,9 @@ createRoot(document.querySelector('#root')!).render(
             </Route>
 
             <Route element={<AuthenticatedRoute />}>
-              {/* <Route path='farms' element={<Farms />} /> */}
+              <Route element={<FarmsLayout />}>
+                <Route path='farms' element={<FarmsPage />} />
+              </Route>
             </Route>
           </Routes>
         </BrowserRouter>

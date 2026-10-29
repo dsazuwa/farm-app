@@ -1,13 +1,14 @@
 import { useTheme } from '@/hooks/use-theme';
+import { Button } from '../ui/button';
 
 export default function ThemeToggle() {
   const { theme, setTheme } = useTheme();
 
   return (
-    <button
+    <Button
       onClick={() => setTheme(theme === 'light' ? 'dark' : 'light')}
-      className='hover:bg-muted inline-flex items-center justify-center rounded-md p-2 text-sm font-medium transition-colors focus-visible:outline-none'
-      aria-label='Toggle theme'
+      variant='ghost'
+      size='icon'
     >
       <svg
         xmlns='http://www.w3.org/2000/svg'
@@ -28,6 +29,6 @@ export default function ThemeToggle() {
           />
         </g>
       </svg>
-    </button>
+    </Button>
   );
 }

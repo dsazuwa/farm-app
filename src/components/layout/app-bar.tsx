@@ -1,23 +1,31 @@
-import { cn } from 'cn';
 import { Link } from 'react-router';
 
+import { useAuth } from '@/hooks/use-auth';
 import Brand from '../brand';
 import { Button } from '../ui/button';
 import ThemeToggle from './theme-toggle';
 
-export default function AppBar({ className }: { className?: string }) {
+export default function AppBar() {
+  const { user, isLoading } = useAuth();
+
   return (
-    <header
-      className={cn(
-        'flex flex-row items-center justify-between gap-4 border-b',
-        className,
-      )}
-    >
+    <header className='flex flex-row items-center justify-between gap-4 border-b px-10 py-5.5'>
       <Brand />
       <div className='flex items-center gap-1'>
         <ThemeToggle />
-        <Button variant='ghost' render={<Link to='/login'>Log In</Link>} />
-        <Button render={<Link to='/register'>Get Started</Link>} />
+
+        {!isLoading &&
+          (user ? (
+            <></>
+          ) : (
+            <>
+              <Button
+                variant='ghost'
+                render={<Link to='/login'>Log In</Link>}
+              />
+              <Button render={<Link to='/register'>Get Started</Link>} />
+            </>
+          ))}
       </div>
     </header>
   );
