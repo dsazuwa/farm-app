@@ -5,23 +5,23 @@ import { Link } from 'react-router';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
-type AuthLayoutProps = {
-  googleLabel?: string;
-  footerText: string;
-  footerLinkText: string;
-  footerLinkHref: string;
+type AuthCardProps = {
   children: ReactNode;
   title?: string;
+  googleLabel?: string;
+  footer?: {
+    text: string;
+    linkText: string;
+    href: string;
+  };
 };
 
 export default function AuthCard({
+  children,
   title,
   googleLabel,
-  footerText,
-  footerLinkText,
-  footerLinkHref,
-  children,
-}: AuthLayoutProps) {
+  footer,
+}: AuthCardProps) {
   return (
     <>
       <Card className='my-(--card-spacing) w-full py-10'>
@@ -53,14 +53,16 @@ export default function AuthCard({
         </CardContent>
       </Card>
 
-      <p className='text-muted-foreground flex items-center justify-center gap-1 pb-2 text-sm'>
-        {footerText}{' '}
-        <Button
-          variant='link'
-          className='h-fit px-0'
-          render={<Link to={footerLinkHref}>{footerLinkText}</Link>}
-        />
-      </p>
+      {footer && (
+        <p className='text-muted-foreground flex items-center justify-center gap-1 pb-2 text-sm'>
+          {footer.text}{' '}
+          <Button
+            variant='link'
+            className='h-fit px-0'
+            render={<Link to={footer.href}>{footer.linkText}</Link>}
+          />
+        </p>
+      )}
     </>
   );
 }

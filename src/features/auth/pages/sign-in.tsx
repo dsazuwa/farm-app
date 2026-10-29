@@ -12,9 +12,11 @@ export default function SignIn() {
   return (
     <AuthCard
       title='Welcome Back'
-      footerText='New to Farm Desk?'
-      footerLinkText='Create an account'
-      footerLinkHref='/sign-up'
+      footer={{
+        text: 'New to Farm Desk?',
+        href: '/sign-up',
+        linkText: 'Create an account',
+      }}
     >
       <SignInForm />
     </AuthCard>

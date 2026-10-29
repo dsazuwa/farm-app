@@ -15,9 +15,11 @@ export default function Recover() {
   return (
     <AuthCard
       title={isSubmitted ? undefined : 'Forgot Your Password?'}
-      footerText='Remember your password?'
-      footerLinkText='Sign in'
-      footerLinkHref='/sign-in'
+      footer={{
+        text: 'Remember your password?',
+        href: '/sign-in',
+        linkText: 'Sign in',
+      }}
     >
       {isSubmitted ? (
         <AuthStatus

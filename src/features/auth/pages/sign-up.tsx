@@ -19,9 +19,11 @@ export default function SignUp() {
   return (
     <AuthCard
       title={isSubmitted ? undefined : 'Create Your Account'}
-      footerText='Already have an account?'
-      footerLinkText='Sign in'
-      footerLinkHref='/sign-in'
+      footer={{
+        text: 'Already have an account?',
+        href: '/sign-in',
+        linkText: 'Sign in',
+      }}
     >
       {isSubmitted ? (
         <AuthStatus
