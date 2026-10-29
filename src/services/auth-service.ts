@@ -16,21 +16,21 @@ export type AuthCredentials = {
   password: string;
 };
 
-export type RegisterInput = AuthCredentials;
-export type LoginInput = AuthCredentials;
+export type SignUpInput = AuthCredentials;
+export type SignInInput = AuthCredentials;
 
 export const authService = {
   subscribe: subscribeToAuth,
 
   completeRecovery: completePasswordRecovery,
 
-  async register({ email, password }: RegisterInput) {
+  async signUp({ email, password }: SignUpInput) {
     try {
       const { data, error } = await supabase.auth.signUp({
         email: email.trim(),
         password,
         options: {
-          emailRedirectTo: `${globalThis.location.origin}/login`,
+          emailRedirectTo: `${globalThis.location.origin}/sign-in`,
         },
       });
 
@@ -45,7 +45,7 @@ export const authService = {
     }
   },
 
-  async loginWithEmail({ email, password }: LoginInput) {
+  async signInWithEmail({ email, password }: SignInInput) {
     try {
       const { data, error } = await supabase.auth.signInWithPassword({
         email: email.trim(),
@@ -63,7 +63,7 @@ export const authService = {
     }
   },
 
-  async logout(): Promise<void> {
+  async signOut(): Promise<void> {
     try {
       const { error } = await supabase.auth.signOut();
 

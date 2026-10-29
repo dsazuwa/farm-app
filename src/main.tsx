@@ -5,10 +5,10 @@ import { BrowserRouter, Route, Routes } from 'react-router';
 import App from './app.tsx';
 import AuthenticatedRoute from './components/routes/auth-route.tsx';
 import GuestOnlyRoute from './components/routes/guest-only.tsx';
-import Login from './features/auth/pages/login.tsx';
 import Recover from './features/auth/pages/recover.tsx';
-import Register from './features/auth/pages/register.tsx';
 import ResetPassword from './features/auth/pages/reset.tsx';
+import SignIn from './features/auth/pages/sign-in.tsx';
+import SignUp from './features/auth/pages/sign-up.tsx';
 import FarmsPage from './features/farms/farms-page.tsx';
 import './index.css';
 import AuthLayout from './layouts/auth-layout.tsx';
@@ -26,8 +26,8 @@ createRoot(document.querySelector('#root')!).render(
               <Route index element={<App />} />
 
               <Route element={<AuthLayout />}>
-                <Route path='login' element={<Login />} />
-                <Route path='register' element={<Register />} />
+                <Route path='sign-in' element={<SignIn />} />
+                <Route path='sign-up' element={<SignUp />} />
                 <Route path='recover' element={<Recover />} />
                 <Route path='reset' element={<ResetPassword />} />
               </Route>

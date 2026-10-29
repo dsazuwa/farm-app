@@ -5,51 +5,50 @@ import { Button } from '@/components/ui/button';
 import { Field, FieldGroup, FieldLabel } from '@/components/ui/field';
 import { Input } from '@/components/ui/input';
 import { ApiError } from '@/lib/api-error';
-import { authService, type RegisterInput } from '@/services/auth-service';
+import { authService, type SignUpInput } from '@/services/auth-service';
 import type { FieldErrors } from '@/types/validation';
 import AuthCard from '../components/auth-card';
 import AuthStatus from '../components/auth-status';
 import PasswordFields from '../components/password-fields';
 
-type RegisterValues = RegisterInput & { confirmPassword: string };
+type SignUpValues = SignUpInput & { confirmPassword: string };
 
-export default function Register() {
+export default function SignUp() {
   const [isSubmitted, setIsSubmitted] = useState(false);
 
   return (
     <AuthCard
       title={isSubmitted ? undefined : 'Create Your Account'}
-      // googleLabel='Sign up with Google'
       footerText='Already have an account?'
       footerLinkText='Sign in'
-      footerLinkHref='/login'
+      footerLinkHref='/sign-in'
     >
       {isSubmitted ? (
         <AuthStatus
           icon={MailCheck}
           title='Check your email!'
-          description='Check your inbox for an account confirmation link.'
+          description='Check your inbox for an email confirmation link.'
           hint="Don't see it? Check your spam folder."
         />
       ) : (
-        <RegisterForm onSuccess={() => setIsSubmitted(true)} />
+        <SignUpForm onSuccess={() => setIsSubmitted(true)} />
       )}
     </AuthCard>
   );
 }
 
-function RegisterForm({ onSuccess }: { onSuccess: () => void }) {
-  const [values, setValues] = useState<RegisterValues>({
+function SignUpForm({ onSuccess }: { onSuccess: () => void }) {
+  const [values, setValues] = useState<SignUpValues>({
     email: '',
     password: '',
     confirmPassword: '',
   });
-  const [errors, setErrors] = useState<FieldErrors<RegisterValues>>({});
+  const [errors, setErrors] = useState<FieldErrors<SignUpValues>>({});
   const [requestError, setRequestError] = useState('');
   const [isPending, setIsPending] = useState(false);
 
-  function validate(values: RegisterValues): FieldErrors<RegisterValues> {
-    const errors: FieldErrors<RegisterValues> = {};
+  function validate(values: SignUpValues): FieldErrors<SignUpValues> {
+    const errors: FieldErrors<SignUpValues> = {};
 
     if (values.password !== values.confirmPassword)
       errors.confirmPassword = 'Passwords do not match.';
@@ -57,7 +56,7 @@ function RegisterForm({ onSuccess }: { onSuccess: () => void }) {
     return errors;
   }
 
-  function updateField(field: keyof RegisterValues, value: string) {
+  function updateField(field: keyof SignUpValues, value: string) {
     setValues((previous) => ({
       ...previous,
       [field]: value,
@@ -81,7 +80,7 @@ function RegisterForm({ onSuccess }: { onSuccess: () => void }) {
     setIsPending(true);
 
     try {
-      await authService.register({
+      await authService.signUp({
         email: values.email.trim(),
         password: values.password,
       });
@@ -91,7 +90,7 @@ function RegisterForm({ onSuccess }: { onSuccess: () => void }) {
       setRequestError(
         error instanceof ApiError
           ? error.message
-          : 'Registration failed. Please try again.',
+          : 'Sign-up failed. Please try again.',
       );
     } finally {
       setIsPending(false);
@@ -102,9 +101,9 @@ function RegisterForm({ onSuccess }: { onSuccess: () => void }) {
     <form onSubmit={handleSubmit}>
       <FieldGroup>
         <Field>
-          <FieldLabel htmlFor='register-email'>Email</FieldLabel>
+          <FieldLabel htmlFor='sign-up-email'>Email</FieldLabel>
           <Input
-            id='register-email'
+            id='sign-up-email'
             name='email'
             type='email'
             autoComplete='email'
@@ -116,7 +115,7 @@ function RegisterForm({ onSuccess }: { onSuccess: () => void }) {
         </Field>
 
         <PasswordFields
-          idPrefix='register'
+          idPrefix='sign-up'
           password={values.password}
           confirmPassword={values.confirmPassword}
           confirmPasswordError={errors.confirmPassword}
@@ -135,7 +134,7 @@ function RegisterForm({ onSuccess }: { onSuccess: () => void }) {
 
         <Field>
           <Button type='submit' disabled={isPending}>
-            {isPending ? 'Creating account ...' : 'Create account'}
+            {isPending ? 'Creating account…' : 'Create account'}
           </Button>
         </Field>
       </FieldGroup>

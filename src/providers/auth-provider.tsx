@@ -1,12 +1,12 @@
 import { useEffect, useState, type ReactNode } from 'react';
 
-import { AuthContext, type LogOutReason } from '@/context/auth-context';
+import { AuthContext, type SignOutReason } from '@/context/auth-context';
 import type { AuthSnapshot } from '@/lib/supabase';
 import { authService } from '@/services/auth-service';
 
 type AuthState = AuthSnapshot & {
-  phase: 'idle' | 'logging-out';
-  logOutReason: LogOutReason;
+  phase: 'idle' | 'signing-out';
+  signOutReason: SignOutReason;
 };
 
 export default function AuthProvider({ children }: { children: ReactNode }) {
@@ -15,7 +15,7 @@ export default function AuthProvider({ children }: { children: ReactNode }) {
     isLoading: true,
     isRecovering: false,
     phase: 'idle', // whether a sign-out request is running
-    logOutReason: undefined, // whether sign-out was intentional or the session ended otherwise
+    signOutReason: undefined, // whether sign-out was intentional or the session ended otherwise
   });
 
   useEffect(() => {
@@ -25,38 +25,40 @@ export default function AuthProvider({ children }: { children: ReactNode }) {
           return {
             ...snapshot,
             phase: previous.phase,
-            logOutReason:
-              previous.phase === 'logging-out' ? 'logout' : undefined,
+            signOutReason:
+              previous.phase === 'signing-out' ? 'manual-sign-out' : undefined,
           };
         }
 
-        const intentionalLogout =
-          previous.phase === 'logging-out' ||
-          previous.logOutReason === 'logout';
+        const intentionalSignOut =
+          previous.phase === 'signing-out' ||
+          previous.signOutReason === 'manual-sign-out';
 
         return {
           ...snapshot,
           phase: 'idle',
-          logOutReason: intentionalLogout ? 'logout' : 'session-ended',
+          signOutReason: intentionalSignOut
+            ? 'manual-sign-out'
+            : 'session-ended',
         };
       });
     });
   }, []);
 
-  async function logout(): Promise<void> {
+  async function signOut(): Promise<void> {
     setState((previous) => ({
       ...previous,
-      phase: 'logging-out',
-      logOutReason: 'logout',
+      phase: 'signing-out',
+      signOutReason: 'manual-sign-out',
     }));
 
     try {
-      await authService.logout();
+      await authService.signOut();
     } catch (error) {
       setState((previous) => ({
         ...previous,
         phase: 'idle',
-        logOutReason: previous.user ? undefined : previous.logOutReason,
+        signOutReason: previous.user ? undefined : previous.signOutReason,
       }));
 
       throw error;
@@ -69,9 +71,9 @@ export default function AuthProvider({ children }: { children: ReactNode }) {
         user: state.user,
         isLoading: state.isLoading,
         isRecovering: state.isRecovering,
-        isLoggingOut: state.phase === 'logging-out',
-        logOutReason: state.logOutReason,
-        logout,
+        isSigningOut: state.phase === 'signing-out',
+        signOutReason: state.signOutReason,
+        signOut,
         completeRecovery: authService.completeRecovery,
       }}
     >

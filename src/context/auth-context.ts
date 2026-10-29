@@ -2,15 +2,15 @@ import { createContext } from 'react';
 
 import type { AuthUser } from '@/services/auth-service';
 
-export type LogOutReason = 'logout' | 'session-ended' | undefined;
+export type SignOutReason = 'manual-sign-out' | 'session-ended' | undefined;
 
 export type AuthContextValue = {
   user: AuthUser | undefined;
   isLoading: boolean;
   isRecovering: boolean;
-  isLoggingOut: boolean;
-  logOutReason: LogOutReason;
-  logout: () => Promise<void>;
+  isSigningOut: boolean;
+  signOutReason: SignOutReason;
+  signOut: () => Promise<void>;
   completeRecovery: () => void;
 };
 

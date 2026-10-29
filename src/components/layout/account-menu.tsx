@@ -17,20 +17,19 @@ import { ApiError } from '@/lib/api-error';
 
 export default function AccountMenu({ email }: { email: string | undefined }) {
   const navigate = useNavigate();
+  const { signOut, isSigningOut } = useAuth();
+  const [signOutError, setSignOutError] = useState('');
 
-  const { logout, isLoggingOut } = useAuth();
-  const [logoutError, setLogoutError] = useState('');
+  async function handleSignOut() {
+    if (isSigningOut) return;
 
-  async function handleLogout() {
-    if (isLoggingOut) return;
-
-    setLogoutError('');
+    setSignOutError('');
 
     try {
-      await logout();
+      await signOut();
       navigate('/', { replace: true });
     } catch (error) {
-      setLogoutError(
+      setSignOutError(
         error instanceof ApiError
           ? error.message
           : "We couldn't sign you out. Please try again.",
@@ -47,7 +46,7 @@ export default function AccountMenu({ email }: { email: string | undefined }) {
               variant='ghost'
               aria-label='Open account menu'
               className='gap-1 px-2'
-              disabled={isLoggingOut}
+              disabled={isSigningOut}
             >
               <User className='size-5' aria-hidden='true' />
               <ChevronDown
@@ -73,19 +72,19 @@ export default function AccountMenu({ email }: { email: string | undefined }) {
 
           <DropdownMenuSeparator />
 
-          <DropdownMenuItem onClick={handleLogout} disabled={isLoggingOut}>
+          <DropdownMenuItem onClick={handleSignOut} disabled={isSigningOut}>
             <LogOut className='size-4' aria-hidden='true' />
-            {isLoggingOut ? 'Signing out…' : 'Sign out'}
+            {isSigningOut ? 'Signing out…' : 'Sign out'}
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
 
-      {logoutError && (
+      {signOutError && (
         <p
           role='alert'
           className='bg-background text-destructive absolute top-full right-0 z-50 mt-2 w-64 rounded-md border p-3 text-sm shadow-sm'
         >
-          {logoutError}
+          {signOutError}
         </p>
       )}
     </div>

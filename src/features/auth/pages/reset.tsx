@@ -37,7 +37,7 @@ export default function ResetPassword() {
     <AuthCard
       footerText='Remember your password?'
       footerLinkText='Sign in'
-      footerLinkHref='/login'
+      footerLinkHref='/sign-in'
       title={status === 'form' ? 'Set a New Password' : undefined}
     >
       {status === 'loading' && (

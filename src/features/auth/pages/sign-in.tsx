@@ -5,31 +5,33 @@ import { Button } from '@/components/ui/button';
 import { Field, FieldGroup, FieldLabel } from '@/components/ui/field';
 import { Input } from '@/components/ui/input';
 import { ApiError } from '@/lib/api-error';
-import { authService, type LoginInput } from '@/services/auth-service';
+import { authService, type SignInInput } from '@/services/auth-service';
 import AuthCard from '../components/auth-card';
 
-export default function Login() {
+export default function SignIn() {
   return (
     <AuthCard
       title='Welcome Back'
-      // googleLabel='Continue with Google'
       footerText='New to Farm Desk?'
       footerLinkText='Create an account'
-      footerLinkHref='/register'
+      footerLinkHref='/sign-up'
     >
-      <LoginForm />
+      <SignInForm />
     </AuthCard>
   );
 }
 
-function LoginForm() {
+function SignInForm() {
   const navigate = useNavigate();
 
-  const [values, setValues] = useState<LoginInput>({ email: '', password: '' });
+  const [values, setValues] = useState<SignInInput>({
+    email: '',
+    password: '',
+  });
   const [requestError, setRequestError] = useState('');
   const [isPending, setIsPending] = useState(false);
 
-  function updateField(field: keyof LoginInput, value: string) {
+  function updateField(field: keyof SignInInput, value: string) {
     setValues((previous) => ({ ...previous, [field]: value }));
     setRequestError('');
   }
@@ -43,22 +45,17 @@ function LoginForm() {
     setIsPending(true);
 
     try {
-      await authService.loginWithEmail({
+      await authService.signInWithEmail({
         email: values.email.trim(),
         password: values.password,
       });
-
-      // UI-only test: no account is created.
-      // await new Promise<void>((resolve) => {
-      //   setTimeout(resolve, 800);
-      // });
 
       navigate('/farms', { replace: true });
     } catch (error) {
       setRequestError(
         error instanceof ApiError
           ? error.message
-          : 'Login failed. Please try again.',
+          : 'Sign-in failed. Please try again.',
       );
     } finally {
       setIsPending(false);
@@ -69,9 +66,9 @@ function LoginForm() {
     <form onSubmit={handleSubmit}>
       <FieldGroup>
         <Field>
-          <FieldLabel htmlFor='login-email'>Email</FieldLabel>
+          <FieldLabel htmlFor='sign-in-email'>Email</FieldLabel>
           <Input
-            id='login-email'
+            id='sign-in-email'
             name='email'
             type='email'
             autoComplete='username'
@@ -84,7 +81,7 @@ function LoginForm() {
 
         <Field>
           <div className='flex items-center justify-between gap-2'>
-            <FieldLabel htmlFor='login-password'>Password</FieldLabel>
+            <FieldLabel htmlFor='sign-in-password'>Password</FieldLabel>
 
             <Button
               variant='link'
@@ -94,7 +91,7 @@ function LoginForm() {
           </div>
 
           <Input
-            id='login-password'
+            id='sign-in-password'
             name='password'
             type='password'
             autoComplete='current-password'

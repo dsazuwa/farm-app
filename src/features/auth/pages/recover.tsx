@@ -17,7 +17,7 @@ export default function Recover() {
       title={isSubmitted ? undefined : 'Forgot Your Password?'}
       footerText='Remember your password?'
       footerLinkText='Sign in'
-      footerLinkHref='/login'
+      footerLinkHref='/sign-in'
     >
       {isSubmitted ? (
         <AuthStatus

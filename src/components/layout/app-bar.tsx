@@ -22,9 +22,9 @@ export default function AppBar() {
             <>
               <Button
                 variant='ghost'
-                render={<Link to='/login'>Log In</Link>}
+                render={<Link to='/sign-in'>Sign In</Link>}
               />
-              <Button render={<Link to='/register'>Get Started</Link>} />
+              <Button render={<Link to='/sign-up'>Get Started</Link>} />
             </>
           ))}
       </div>
