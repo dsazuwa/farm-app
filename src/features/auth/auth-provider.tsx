@@ -1,8 +1,8 @@
 import { useEffect, useState, type ReactNode } from 'react';
 
-import { AuthContext, type SignOutReason } from '@/context/auth-context';
+import { AuthContext, type SignOutReason } from '@/features/auth/auth-context';
 import type { AuthSnapshot } from '@/lib/supabase';
-import { authService } from '@/services/auth-service';
+import { authService } from '@/features/auth/auth-service';
 
 type AuthState = AuthSnapshot & {
   phase: 'idle' | 'signing-out';

@@ -12,7 +12,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { useAuth } from '@/hooks/use-auth';
+import { useAuth } from '@/features/auth/use-auth';
 import { ApiError } from '@/lib/api-error';
 
 export default function AccountMenu({ email }: { email: string | undefined }) {

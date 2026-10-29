@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Field, FieldGroup, FieldLabel } from '@/components/ui/field';
 import { Input } from '@/components/ui/input';
 import { ApiError } from '@/lib/api-error';
-import { authService, type SignInInput } from '@/services/auth-service';
+import { authService, type SignInInput } from '@/features/auth/auth-service';
 import AuthCard from '../components/auth-card';
 
 export default function SignIn() {

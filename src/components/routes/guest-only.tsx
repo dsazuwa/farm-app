@@ -1,6 +1,6 @@
 import { Navigate, Outlet } from 'react-router';
 
-import { useAuth } from '@/hooks/use-auth';
+import { useAuth } from '@/features/auth/use-auth';
 
 export default function GuestOnlyRoute() {
   const { user, isLoading, isRecovering } = useAuth();

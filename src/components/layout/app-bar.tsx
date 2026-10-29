@@ -1,6 +1,6 @@
 import { Link } from 'react-router';
 
-import { useAuth } from '@/hooks/use-auth';
+import { useAuth } from '@/features/auth/use-auth';
 import Brand from '../brand';
 import { Button } from '../ui/button';
 import AccountMenu from './account-menu';

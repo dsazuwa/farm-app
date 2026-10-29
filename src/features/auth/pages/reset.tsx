@@ -4,9 +4,9 @@ import { Link } from 'react-router';
 
 import { Button } from '@/components/ui/button';
 import { Field, FieldGroup } from '@/components/ui/field';
-import { useAuth } from '@/hooks/use-auth';
+import { useAuth } from '@/features/auth/use-auth';
 import { ApiError } from '@/lib/api-error';
-import { authService } from '@/services/auth-service';
+import { authService } from '@/features/auth/auth-service';
 import type { FieldErrors } from '@/types/validation';
 import AuthCard from '../components/auth-card';
 import AuthStatus from '../components/auth-status';

@@ -4,7 +4,7 @@ import { useState, type SubmitEvent } from 'react';
 import { Button } from '@/components/ui/button';
 import { Field, FieldGroup, FieldLabel } from '@/components/ui/field';
 import { Input } from '@/components/ui/input';
-import { authService } from '@/services/auth-service';
+import { authService } from '@/features/auth/auth-service';
 import AuthCard from '../components/auth-card';
 import AuthStatus from '../components/auth-status';
 import { ApiError } from '@/lib/api-error';

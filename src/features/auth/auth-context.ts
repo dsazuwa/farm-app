@@ -1,6 +1,6 @@
 import { createContext } from 'react';
 
-import type { AuthUser } from '@/services/auth-service';
+import type { AuthUser } from '@/features/auth/auth-service';
 
 export type SignOutReason = 'manual-sign-out' | 'session-ended' | undefined;
 

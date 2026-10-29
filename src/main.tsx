@@ -5,15 +5,15 @@ import { BrowserRouter, Route, Routes } from 'react-router';
 import App from './app.tsx';
 import AuthenticatedRoute from './components/routes/auth-route.tsx';
 import GuestOnlyRoute from './components/routes/guest-only.tsx';
+import AuthLayout from './features/auth/auth-layout.tsx';
+import AuthProvider from './features/auth/auth-provider.tsx';
 import Recover from './features/auth/pages/recover.tsx';
 import ResetPassword from './features/auth/pages/reset.tsx';
 import SignIn from './features/auth/pages/sign-in.tsx';
 import SignUp from './features/auth/pages/sign-up.tsx';
 import FarmsPage from './features/farms/farms-page.tsx';
 import './index.css';
-import AuthLayout from './layouts/auth-layout.tsx';
 import FarmsLayout from './layouts/farms-layout.tsx';
-import AuthProvider from './providers/auth-provider.tsx';
 import ThemeProvider from './providers/theme-provider.tsx';
 
 createRoot(document.querySelector('#root')!).render(

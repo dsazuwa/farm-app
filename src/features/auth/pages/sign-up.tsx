@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Field, FieldGroup, FieldLabel } from '@/components/ui/field';
 import { Input } from '@/components/ui/input';
 import { ApiError } from '@/lib/api-error';
-import { authService, type SignUpInput } from '@/services/auth-service';
+import { authService, type SignUpInput } from '@/features/auth/auth-service';
 import type { FieldErrors } from '@/types/validation';
 import AuthCard from '../components/auth-card';
 import AuthStatus from '../components/auth-status';
