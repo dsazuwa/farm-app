@@ -1,103 +1,119 @@
 import { Check, CircleX, LoaderCircle } from 'lucide-react';
 import { useState, type SubmitEvent } from 'react';
-import { Link } from 'react-router';
+import { Link, Navigate, useNavigate } from 'react-router';
 
+import Brand from '@/components/brand';
 import { Button } from '@/components/ui/button';
 import { Field, FieldGroup } from '@/components/ui/field';
+import { authService } from '@/features/auth/auth-service';
 import { useAuth } from '@/features/auth/use-auth';
 import { ApiError } from '@/lib/api-error';
-import { authService } from '@/features/auth/auth-service';
 import type { FieldErrors } from '@/types/validation';
+import AuthLayout from '../auth-layout';
 import AuthCard from '../components/auth-card';
 import AuthStatus from '../components/auth-status';
 import PasswordFields from '../components/password-fields';
 
-type ResetStatus = 'loading' | 'form' | 'success' | 'invalid';
 type ResetValues = { password: string; confirmPassword: string };
+
+type ResetResult = 'idle' | 'success' | 'invalid';
 
 export default function ResetPassword() {
   const { user, isLoading, isRecovering, completeRecovery } = useAuth();
-  const [result, setResult] = useState<ResetStatus>('form');
-  const status = getStatus();
-
-  function getStatus() {
-    if (result === 'success') return 'success';
-    if (isLoading) return 'loading';
-    if (result === 'invalid' || !user || !isRecovering) return 'invalid';
-
-    return 'form';
-  }
+  const [result, setResult] = useState<ResetResult>('idle');
 
   function handleSuccess() {
     setResult('success');
     completeRecovery();
   }
 
-  return (
-    <AuthCard
-      title={status === 'form' ? 'Set a New Password' : undefined}
-      footer={{
-        text: 'Remember your password?',
-        href: '/sign-in',
-        linkText: 'Sign in',
-      }}
-    >
-      {status === 'loading' && (
-        <div
-          role='status'
-          className='flex flex-col items-center gap-4 py-4 text-center'
-        >
-          <LoaderCircle
-            className='text-primary size-6 animate-spin'
-            aria-hidden='true'
-          />
+  function handleInvalidLink() {
+    setResult('invalid');
+    completeRecovery();
+  }
 
+  if (isLoading) {
+    return (
+      <main className='flex flex-1 flex-col items-center justify-center gap-4'>
+        <Brand />
+
+        <div role='status' className='flex items-center gap-2'>
+          <LoaderCircle className='size-5 animate-spin' aria-hidden='true' />
           <p className='text-muted-foreground text-sm'>
             Checking your reset link…
           </p>
         </div>
-      )}
+      </main>
+    );
+  }
 
-      {status === 'form' && (
+  if (result === 'success')
+    return (
+      <AuthLayout>
+        <AuthCard>
+          <AuthStatus
+            icon={Check}
+            title='Password Updated'
+            description='Your password has been reset.'
+            hint='You can now continue to your farms.'
+          >
+            <Button
+              className='w-full'
+              render={
+                <Link to='/farms' replace>
+                  Continue to Farms
+                </Link>
+              }
+            />
+          </AuthStatus>
+        </AuthCard>
+      </AuthLayout>
+    );
+
+  // Normally signed-in users don't need the recovery page.
+  if (user && !isRecovering) return <Navigate to='/farms' replace />;
+
+  // No usable recovery flow.
+  if (result === 'invalid' || !user || !isRecovering)
+    return (
+      <AuthLayout>
+        <AuthCard
+          footer={{
+            text: 'Remember your password?',
+            href: '/sign-in',
+            linkText: 'Sign in',
+          }}
+        >
+          <AuthStatus
+            icon={CircleX}
+            iconClassName='bg-amber-500/10 text-yellow-700'
+            title='Invalid or Expired Link'
+            description='This password reset link is no longer valid.'
+            hint='Request a new password reset link.'
+          >
+            <Button
+              className='w-full'
+              render={
+                <Link to='/recover' replace>
+                  Request a New Link
+                </Link>
+              }
+            />
+          </AuthStatus>
+        </AuthCard>
+      </AuthLayout>
+    );
+
+  // An authenticated recovery session is ready.
+  return (
+    <AuthLayout>
+      <AuthCard title='Set a New Password'>
         <ResetForm
           onSuccess={handleSuccess}
-          onInvalidLink={() => setResult('invalid')}
+          onInvalidLink={handleInvalidLink}
         />
-      )}
-
-      {status === 'success' && (
-        <AuthStatus
-          icon={Check}
-          title='Password Updated'
-          description='Your password has been reset.'
-          hint='You can now continue to your farms.'
-        >
-          <Button
-            className='w-full'
-            render={
-              <Link to='/farms' replace>
-                Continue to Farms
-              </Link>
-            }
-          />
-        </AuthStatus>
-      )}
-
-      {status === 'invalid' && (
-        <AuthStatus
-          icon={CircleX}
-          iconClassName='bg-amber-500/10 text-yellow-700'
-          title='Invalid or Expired Link'
-          description='It may have already been used.'
-          hint='Request a new password reset link.'
-        >
-          <Button
-            className='w-full'
-            render={<Link to='/recover'>Request a New Link</Link>}
-          />
-        </AuthStatus>
-      )}
-    </AuthCard>
+      </AuthCard>
+    </AuthLayout>
   );
 }
 
@@ -108,6 +124,8 @@ function ResetForm({
   onSuccess: () => void;
   onInvalidLink: () => void;
 }) {
+  const navigate = useNavigate();
+  const { signOut, isSigningOut } = useAuth();
   const [values, setValues] = useState<ResetValues>({
     password: '',
     confirmPassword: '',
@@ -115,6 +133,9 @@ function ResetForm({
   const [errors, setErrors] = useState<FieldErrors<ResetValues>>({});
   const [isPending, setIsPending] = useState(false);
   const [requestError, setRequestError] = useState('');
+  const [signOutError, setSignOutError] = useState('');
+
+  const isDisabled = isPending || isSigningOut;
 
   function validate(values: ResetValues): FieldErrors<ResetValues> {
     const errors: FieldErrors<ResetValues> = {};
@@ -138,7 +159,7 @@ function ResetForm({
   async function handleSubmit(e: SubmitEvent<HTMLFormElement>) {
     e.preventDefault();
 
-    if (isPending) return;
+    if (isDisabled) return;
 
     const validationErrors = validate(values);
     setErrors(validationErrors);
@@ -168,34 +189,68 @@ function ResetForm({
     }
   }
 
+  async function handleCancel() {
+    if (isDisabled) return;
+
+    setSignOutError('');
+
+    try {
+      await signOut();
+      navigate('/', { replace: true });
+    } catch (error) {
+      setSignOutError(
+        error instanceof ApiError
+          ? error.message
+          : "We couldn't sign you out. Please try again.",
+      );
+    }
+  }
+
   return (
-    <form onSubmit={handleSubmit}>
-      <FieldGroup>
-        <PasswordFields
-          idPrefix='reset'
-          passwordLabel='New password'
-          password={values.password}
-          confirmPassword={values.confirmPassword}
-          confirmPasswordError={errors.confirmPassword}
-          disabled={isPending}
-          onPasswordChange={(value) => updateField('password', value)}
-          onConfirmPasswordChange={(value) =>
-            updateField('confirmPassword', value)
-          }
-        />
+    <>
+      {signOutError && (
+        <p role='alert' className='text-destructive mb-4 text-sm'>
+          {signOutError}
+        </p>
+      )}
 
-        {requestError && (
-          <p role='alert' className='text-destructive text-sm'>
-            {requestError}
-          </p>
-        )}
+      <form onSubmit={handleSubmit}>
+        <FieldGroup>
+          <PasswordFields
+            idPrefix='reset'
+            passwordLabel='New password'
+            password={values.password}
+            confirmPassword={values.confirmPassword}
+            confirmPasswordError={errors.confirmPassword}
+            disabled={isDisabled}
+            onPasswordChange={(value) => updateField('password', value)}
+            onConfirmPasswordChange={(value) =>
+              updateField('confirmPassword', value)
+            }
+          />
 
-        <Field>
-          <Button disabled={isPending} type='submit'>
-            {isPending ? 'Updating password...' : 'Update password'}
-          </Button>
-        </Field>
-      </FieldGroup>
-    </form>
+          {requestError && (
+            <p role='alert' className='text-destructive text-sm'>
+              {requestError}
+            </p>
+          )}
+
+          <Field>
+            <Button disabled={isDisabled} type='submit'>
+              {isPending ? 'Updating password...' : 'Update password'}
+            </Button>
+
+            <Button
+              type='button'
+              variant='ghost'
+              onClick={handleCancel}
+              disabled={isDisabled}
+            >
+              {isSigningOut ? 'Signing out…' : 'Cancel and sign out'}
+            </Button>
+          </Field>
+        </FieldGroup>
+      </form>
+    </>
   );
 }

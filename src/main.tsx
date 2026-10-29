@@ -29,9 +29,10 @@ createRoot(document.querySelector('#root')!).render(
                 <Route path='sign-in' element={<SignIn />} />
                 <Route path='sign-up' element={<SignUp />} />
                 <Route path='recover' element={<Recover />} />
-                <Route path='reset' element={<ResetPassword />} />
               </Route>
             </Route>
+
+            <Route path='reset' element={<ResetPassword />} />
 
             <Route element={<AuthenticatedRoute />}>
               <Route element={<FarmsLayout />}>
