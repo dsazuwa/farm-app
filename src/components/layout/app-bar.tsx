@@ -3,6 +3,7 @@ import { Link } from 'react-router';
 import { useAuth } from '@/hooks/use-auth';
 import Brand from '../brand';
 import { Button } from '../ui/button';
+import AccountMenu from './account-menu';
 import ThemeToggle from './theme-toggle';
 
 export default function AppBar() {
@@ -16,7 +17,7 @@ export default function AppBar() {
 
         {!isLoading &&
           (user ? (
-            <></>
+            <AccountMenu email={user.email} />
           ) : (
             <>
               <Button
