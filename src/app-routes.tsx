@@ -8,9 +8,24 @@ import GuestOnlyRoute from './components/routes/guest-only.tsx';
 import AuthLayout from './features/auth/auth-layout.tsx';
 import FarmsLayout from './layouts/farms-layout.tsx';
 
-const SignIn = lazy(() => import('./features/auth/pages/sign-in.tsx'));
-const SignUp = lazy(() => import('./features/auth/pages/sign-up.tsx'));
-const Recover = lazy(() => import('./features/auth/pages/recover.tsx'));
+const SignIn = lazy(() =>
+  import('./features/auth/guest-auth-pages').then((module) => ({
+    default: module.SignIn,
+  })),
+);
+
+const SignUp = lazy(() =>
+  import('./features/auth/guest-auth-pages').then((module) => ({
+    default: module.SignUp,
+  })),
+);
+
+const Recover = lazy(() =>
+  import('./features/auth/guest-auth-pages').then((module) => ({
+    default: module.Recover,
+  })),
+);
+
 const ResetPassword = lazy(() => import('./features/auth/pages/reset.tsx'));
 const FarmsPage = lazy(() => import('./features/farms/farms-page.tsx'));
 
