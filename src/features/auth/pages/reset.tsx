@@ -164,6 +164,7 @@ function ResetForm({
     const validationErrors = validate(values);
     setErrors(validationErrors);
     setRequestError('');
+    setSignOutError('');
 
     if (Object.keys(validationErrors).length > 0) return;
 
@@ -192,6 +193,7 @@ function ResetForm({
   async function handleCancel() {
     if (isDisabled) return;
 
+    setRequestError('');
     setSignOutError('');
 
     try {
