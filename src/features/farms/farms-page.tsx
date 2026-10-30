@@ -1,3 +1,11 @@
+import PageTitle from '@/components/page-title';
+
 export default function FarmsPage() {
-  return <div>FarmsPage</div>;
+  return (
+    <>
+      <PageTitle title='Farms' />
+
+      <div>FarmsPage</div>
+    </>
+  );
 }

@@ -1,25 +1,30 @@
 import { useState, type SubmitEvent } from 'react';
 import { Link, useNavigate } from 'react-router';
 
+import PageTitle from '@/components/page-title';
 import { Button } from '@/components/ui/button';
 import { Field, FieldGroup, FieldLabel } from '@/components/ui/field';
 import { Input } from '@/components/ui/input';
-import { ApiError } from '@/lib/api-error';
 import { authService, type SignInInput } from '@/features/auth/auth-service';
+import { ApiError } from '@/lib/api-error';
 import AuthCard from '../components/auth-card';
 
 export default function SignIn() {
   return (
-    <AuthCard
-      title='Welcome Back'
-      footer={{
-        text: 'New to Farm Desk?',
-        href: '/sign-up',
-        linkText: 'Create an account',
-      }}
-    >
-      <SignInForm />
-    </AuthCard>
+    <>
+      <PageTitle title='Sign In' />
+
+      <AuthCard
+        title='Welcome Back'
+        footer={{
+          text: 'New to Farm Desk?',
+          href: '/sign-up',
+          linkText: 'Create an account',
+        }}
+      >
+        <SignInForm />
+      </AuthCard>
+    </>
   );
 }
 

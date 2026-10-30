@@ -13,6 +13,7 @@ import AuthLayout from '../auth-layout';
 import AuthCard from '../components/auth-card';
 import AuthStatus from '../components/auth-status';
 import PasswordFields from '../components/password-fields';
+import PageTitle from '@/components/page-title';
 
 type ResetValues = { password: string; confirmPassword: string };
 
@@ -36,25 +37,29 @@ export default function ResetPassword() {
 
   if (result === 'success')
     return (
-      <AuthLayout>
-        <AuthCard>
-          <AuthStatus
-            icon={Check}
-            title='Password Updated'
-            description='Your password has been reset.'
-            hint='You can now continue to your farms.'
-          >
-            <Button
-              className='w-full'
-              render={
-                <Link to='/farms' replace>
-                  Continue to Farms
-                </Link>
-              }
-            />
-          </AuthStatus>
-        </AuthCard>
-      </AuthLayout>
+      <>
+        <PageTitle title='Password Updated!' />
+
+        <AuthLayout>
+          <AuthCard>
+            <AuthStatus
+              icon={Check}
+              title='Password Updated'
+              description='Your password has been reset.'
+              hint='You can now continue to your farms.'
+            >
+              <Button
+                className='w-full'
+                render={
+                  <Link to='/farms' replace>
+                    Continue to Farms
+                  </Link>
+                }
+              />
+            </AuthStatus>
+          </AuthCard>
+        </AuthLayout>
+      </>
     );
 
   // Normally signed-in users don't need the recovery page.
@@ -63,44 +68,52 @@ export default function ResetPassword() {
   // No usable recovery flow.
   if (result === 'invalid' || !user || !isRecovering)
     return (
-      <AuthLayout>
-        <AuthCard
-          footer={{
-            text: 'Remember your password?',
-            href: '/sign-in',
-            linkText: 'Sign in',
-          }}
-        >
-          <AuthStatus
-            icon={CircleX}
-            iconClassName='bg-amber-500/10 text-yellow-700'
-            title='Invalid or Expired Link'
-            description='This password reset link is no longer valid.'
-            hint='Request a new password reset link.'
+      <>
+        <PageTitle title='Invalid Reset Link' />
+
+        <AuthLayout>
+          <AuthCard
+            footer={{
+              text: 'Remember your password?',
+              href: '/sign-in',
+              linkText: 'Sign in',
+            }}
           >
-            <Button
-              className='w-full'
-              render={
-                <Link to='/recover' replace>
-                  Request a New Link
-                </Link>
-              }
-            />
-          </AuthStatus>
-        </AuthCard>
-      </AuthLayout>
+            <AuthStatus
+              icon={CircleX}
+              iconClassName='bg-amber-500/10 text-yellow-700'
+              title='Invalid or Expired Link'
+              description='This password reset link is no longer valid.'
+              hint='Request a new password reset link.'
+            >
+              <Button
+                className='w-full'
+                render={
+                  <Link to='/recover' replace>
+                    Request a New Link
+                  </Link>
+                }
+              />
+            </AuthStatus>
+          </AuthCard>
+        </AuthLayout>
+      </>
     );
 
   // An authenticated recovery session is ready.
   return (
-    <AuthLayout>
-      <AuthCard title='Set a New Password'>
-        <ResetForm
-          onSuccess={handleSuccess}
-          onInvalidLink={handleInvalidLink}
-        />
-      </AuthCard>
-    </AuthLayout>
+    <>
+      <PageTitle title='Reset Password' />
+
+      <AuthLayout>
+        <AuthCard title='Set a New Password'>
+          <ResetForm
+            onSuccess={handleSuccess}
+            onInvalidLink={handleInvalidLink}
+          />
+        </AuthCard>
+      </AuthLayout>
+    </>
   );
 }
 

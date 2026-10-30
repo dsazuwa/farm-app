@@ -1,11 +1,12 @@
 import { MailCheck } from 'lucide-react';
 import { useState, type SubmitEvent } from 'react';
 
+import PageTitle from '@/components/page-title';
 import { Button } from '@/components/ui/button';
 import { Field, FieldGroup, FieldLabel } from '@/components/ui/field';
 import { Input } from '@/components/ui/input';
-import { ApiError } from '@/lib/api-error';
 import { authService, type SignUpInput } from '@/features/auth/auth-service';
+import { ApiError } from '@/lib/api-error';
 import type { FieldErrors } from '@/types/validation';
 import AuthCard from '../components/auth-card';
 import AuthStatus from '../components/auth-status';
@@ -17,25 +18,29 @@ export default function SignUp() {
   const [isSubmitted, setIsSubmitted] = useState(false);
 
   return (
-    <AuthCard
-      title={isSubmitted ? undefined : 'Create Your Account'}
-      footer={{
-        text: 'Already have an account?',
-        href: '/sign-in',
-        linkText: 'Sign in',
-      }}
-    >
-      {isSubmitted ? (
-        <AuthStatus
-          icon={MailCheck}
-          title='Check your email!'
-          description='Check your inbox for an email confirmation link.'
-          hint="Don't see it? Check your spam folder."
-        />
-      ) : (
-        <SignUpForm onSuccess={() => setIsSubmitted(true)} />
-      )}
-    </AuthCard>
+    <>
+      <PageTitle title='Create Account' />
+
+      <AuthCard
+        title={isSubmitted ? undefined : 'Create Your Account'}
+        footer={{
+          text: 'Already have an account?',
+          href: '/sign-in',
+          linkText: 'Sign in',
+        }}
+      >
+        {isSubmitted ? (
+          <AuthStatus
+            icon={MailCheck}
+            title='Check your email!'
+            description='Check your inbox for an email confirmation link.'
+            hint="Don't see it? Check your spam folder."
+          />
+        ) : (
+          <SignUpForm onSuccess={() => setIsSubmitted(true)} />
+        )}
+      </AuthCard>
+    </>
   );
 }
 

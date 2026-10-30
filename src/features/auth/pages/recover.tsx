@@ -1,37 +1,42 @@
 import { MailCheck } from 'lucide-react';
 import { useState, type SubmitEvent } from 'react';
 
+import PageTitle from '@/components/page-title';
 import { Button } from '@/components/ui/button';
 import { Field, FieldGroup, FieldLabel } from '@/components/ui/field';
 import { Input } from '@/components/ui/input';
 import { authService } from '@/features/auth/auth-service';
+import { ApiError } from '@/lib/api-error';
 import AuthCard from '../components/auth-card';
 import AuthStatus from '../components/auth-status';
-import { ApiError } from '@/lib/api-error';
 
 export default function Recover() {
   const [isSubmitted, setIsSubmitted] = useState(false);
 
   return (
-    <AuthCard
-      title={isSubmitted ? undefined : 'Forgot Your Password?'}
-      footer={{
-        text: 'Remember your password?',
-        href: '/sign-in',
-        linkText: 'Sign in',
-      }}
-    >
-      {isSubmitted ? (
-        <AuthStatus
-          icon={MailCheck}
-          title='Check your email!'
-          description="If the account exists, we've sent a reset link."
-          hint="Don't see it? Check your spam folder."
-        />
-      ) : (
-        <RecoverForm onSuccess={() => setIsSubmitted(true)} />
-      )}
-    </AuthCard>
+    <>
+      <PageTitle title='Forgot Password' />
+
+      <AuthCard
+        title={isSubmitted ? undefined : 'Forgot Your Password?'}
+        footer={{
+          text: 'Remember your password?',
+          href: '/sign-in',
+          linkText: 'Sign in',
+        }}
+      >
+        {isSubmitted ? (
+          <AuthStatus
+            icon={MailCheck}
+            title='Check your email!'
+            description="If the account exists, we've sent a reset link."
+            hint="Don't see it? Check your spam folder."
+          />
+        ) : (
+          <RecoverForm onSuccess={() => setIsSubmitted(true)} />
+        )}
+      </AuthCard>
+    </>
   );
 }
 
