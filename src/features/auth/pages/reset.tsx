@@ -1,8 +1,8 @@
-import { Check, CircleX, LoaderCircle } from 'lucide-react';
+import { Check, CircleX } from 'lucide-react';
 import { useState, type SubmitEvent } from 'react';
 import { Link, Navigate, useNavigate } from 'react-router';
 
-import Brand from '@/components/brand';
+import PageLoading from '@/components/layout/page-loading';
 import { Button } from '@/components/ui/button';
 import { Field, FieldGroup } from '@/components/ui/field';
 import { authService } from '@/features/auth/auth-service';
@@ -32,20 +32,7 @@ export default function ResetPassword() {
     completeRecovery();
   }
 
-  if (isLoading) {
-    return (
-      <main className='flex flex-1 flex-col items-center justify-center gap-4'>
-        <Brand />
-
-        <div role='status' className='flex items-center gap-2'>
-          <LoaderCircle className='size-5 animate-spin' aria-hidden='true' />
-          <p className='text-muted-foreground text-sm'>
-            Checking your reset link…
-          </p>
-        </div>
-      </main>
-    );
-  }
+  if (isLoading) return <PageLoading message='Checking your reset link…' />;
 
   if (result === 'success')
     return (

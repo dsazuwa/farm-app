@@ -1,11 +1,12 @@
 import { Navigate, Outlet } from 'react-router';
 
 import { useAuth } from '@/features/auth/use-auth';
+import PageLoading from '../layout/page-loading';
 
 export default function AuthenticatedRoute() {
   const { user, isLoading, isRecovering, signOutReason } = useAuth();
 
-  if (isLoading) return <p role='status'>Loading…</p>;
+  if (isLoading) return <PageLoading message='Loading your session…' />;
 
   if (!user)
     return (
