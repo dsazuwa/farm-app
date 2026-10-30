@@ -10,7 +10,7 @@ export type User = {
   id: string;
   name: string;
   email: string;
-  // avatarUrl: string | null;
+  // avatarUrl: string | undefined;
   createdAt: string;
 };
 
@@ -20,7 +20,7 @@ export type Farm = {
   location: string;
   currency: string;
   status: ArchiveStatus;
-  archivedAt: string | null;
+  archivedAt: string | undefined;
   createdAt: string;
   updatedAt: string;
 };
@@ -30,7 +30,7 @@ export type Sector = {
   farmId: string;
   type: SectorType;
   status: ArchiveStatus;
-  archivedAt: string | null;
+  archivedAt: string | undefined;
   createdAt: string;
   updatedAt: string;
 };
