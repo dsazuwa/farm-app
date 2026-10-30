@@ -4,8 +4,8 @@ import {
   FieldError,
   FieldLabel,
 } from '@/components/ui/field';
-import { Input } from '@/components/ui/input';
 import { PASSWORD_HELP } from '@/lib/validation';
+import PasswordInput from './password-input';
 
 type PasswordFieldsProps = {
   idPrefix: string;
@@ -38,10 +38,9 @@ export default function PasswordFields({
       <Field>
         <FieldLabel htmlFor={passwordId}>{passwordLabel}</FieldLabel>
 
-        <Input
+        <PasswordInput
           id={passwordId}
           name='password'
-          type='password'
           autoComplete='new-password'
           value={password}
           onChange={(e) => onPasswordChange(e.target.value)}
@@ -59,10 +58,9 @@ export default function PasswordFields({
       <Field data-invalid={Boolean(confirmPasswordError)}>
         <FieldLabel htmlFor={confirmId}>Confirm password</FieldLabel>
 
-        <Input
+        <PasswordInput
           id={confirmId}
           name='confirmPassword'
-          type='password'
           autoComplete='new-password'
           value={confirmPassword}
           onChange={(e) => onConfirmPasswordChange(e.target.value)}
